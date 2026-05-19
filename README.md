@@ -410,13 +410,14 @@ Making Sure Your op stack=16384 and -fp87 is enabled
 
 | Key | Action |
 |-----|--------|
-| `F1` | Load scenario file |
-| `F2` | Browse scenario files |
+| `1` | Browse scenario files |
+| `2` | Manual Entry of Data |
+| `3` | Load Scenario Data |
+| `4` | Run Calibration Routine (using CALIB.TXT)* | 
 | `ENTER` | Run engine |
-| `G` | Open QXGraph visualization |
-| `C` | Calibration mode |
 | `ESC` | Quit |
 
+* Screen will pause for a few seconds on an IBM PC as it loads 60 sets of calibration data in to the model
 ---
 
 ## Development History
