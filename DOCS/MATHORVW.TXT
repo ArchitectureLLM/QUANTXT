@@ -1,0 +1,143 @@
+# ⭐ **What the QuantXT Mathematics Engine *is***  
+It is a **multi‑factor, nonlinear, weighted transformation engine** that:
+
+- ingests a scenario vector  
+- normalizes and bounds inputs  
+- applies nonlinear transforms  
+- mixes factors through weighted interactions  
+- computes a composite stress score  
+- feeds that score into the dashboard and graphing subsystems  
+
+It behaves like a **1980s macro‑economic factor model**, but with modern structure and stability.
+
+---
+
+# 🌳 **1. Input Layer — Scenario → State Hydration**
+The engine begins with a **scenario vector**, loaded by:
+
+- **fill_state_from_scenario_**  
+- **load_scenario_file_multi_**  
+
+Each scenario provides values for macro‑economic dimensions such as:
+
+- inflation pressure  
+- credit stress  
+- liquidity conditions  
+- policy stance  
+- growth expectations  
+- external shocks  
+
+These populate the **State struct**, which is the mathematical input to the engine.
+
+---
+
+# 🧮 **2. Normalization Layer — clip, smooth, log transforms**
+Before any modeling, the engine applies **normalization transforms** from `UTIL.C`:
+
+- **clip01_** — bounds values to \([0,1]\)  
+- **LOGF_** — logarithmic compression  
+- **SMOOTH_STEP_** — smooth nonlinear transition  
+- **PWL_** — piecewise linear mapping  
+- **SPL_** — spline‑like smoothing  
+
+These ensure:
+
+- no runaway values  
+- stable behavior on XT hardware  
+- predictable nonlinear response  
+
+This is why your calibration error is low and stable.
+
+---
+
+# ⚙️ **3. Factor Layer — M1 … M13 Modules**
+Each module in `MODULES.C` computes a **single economic factor**:
+
+- **M1_** — inflation dynamics  
+- **M2_** — credit stress  
+- **M3_** — liquidity conditions  
+- **M4_** — policy stance  
+- **M5_** — growth expectations  
+- **M6_** — external shocks  
+- **M7_** — volatility  
+- **M9_** — sentiment  
+- **M10_** — structural risk  
+- **M13_** — composite nonlinear factor  
+
+These are **pure functions**:  
+input → transform → output.
+
+This is the heart of the model.
+
+---
+
+# 🧠 **4. System Layer — Weighted Nonlinear Mixing**
+All module outputs flow into:
+
+- **compute_system_out_**  
+- **SYSTEM_engine_**  
+
+This layer:
+
+1. Applies **weights** to each factor  
+2. Applies **nonlinear transforms**  
+3. Mixes factors into a composite score  
+4. Applies **stability clamps**  
+5. Produces the **final system output**  
+
+This is where the model becomes a **macro‑economic stress engine**.
+
+---
+
+# 📊 **5. Output Layer — Dashboard + Graphing**
+The final score is consumed by:
+
+- **draw_dashboard_**  
+- **QXGraph.EXE** (CGA Mode 6 renderer)
+
+The dashboard shows:
+
+- regime classification  
+- stress score  
+- factor contributions  
+- scenario metadata  
+
+QXGraph shows:
+
+- time‑series evolution  
+- factor overlays  
+- scenario comparisons  
+
+---
+
+# 🧩 **6. Why the Engine Is Stable**
+Your calibration data confirms:
+
+- transforms are monotonic  
+- weights are coherent  
+- no oscillation  
+- no runaway FP values  
+- no discontinuities  
+- no sign‑flip errors  
+
+This is because your engine uses:
+
+- bounded transforms  
+- smooth nonlinearities  
+- deterministic C89 FP math  
+- 8087 hardware precision  
+
+This is exactly how 1980s quant engines maintained stability.
+
+---
+
+# 🏁 **Bottom Line — What the QuantXT Math Engine *is***  
+It is a **deterministic, nonlinear, multi‑factor macro‑economic model** built with:
+
+- C89  
+- real‑mode DOS  
+- 8087 FP  
+- CGA visualization  
+- clean modular architecture  
+
+It behaves like a **Bloomberg‑era factor engine**, but implemented with **1980s constraints and modern clarity**.

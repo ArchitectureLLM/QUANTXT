@@ -1,0 +1,182 @@
+# **How to Use QuantXT — User Guide**
+
+## **1. What QuantXT Is**
+QuantXT is a retro‑authentic **financial modeling engine** for DOS. It loads macro‑economic scenarios, runs them through a nonlinear factor model, and displays results in:
+
+- a **text‑mode dashboard**
+- a **CGA Mode 6 graphing engine** (QXGraph)
+
+It behaves like a late‑1980s quant workstation.
+
+---
+
+## **2. Starting QuantXT**
+Boot into DOS and run:
+
+```
+QUANTXT.EXE
+```
+
+You’ll see:
+
+1. The **Intro Screen**  
+2. The **Main Dashboard**
+
+From here, you can load scenarios, run the model, browse files, or open graphs.
+
+---
+
+## **3. Loading Scenarios**
+QuantXT reads `.TXT` scenario packs from the working directory.
+
+### **To load scenarios:**
+1. Press **F1**  
+2. Choose a `.TXT` scenario file  
+3. QuantXT loads all scenarios into memory
+
+Behind the scenes, this triggers:
+
+- `load_scenario_file_multi_`
+- `fill_state_from_scenario_`
+
+---
+
+## **4. Browsing Scenario Files**
+Press **F2** to open the **File Browser**.
+
+You can:
+
+- view all `.TXT` files  
+- preview scenario metadata  
+- select a file to load  
+
+This uses:
+
+- `load_txt_file_list_`
+- `browse_txt_files_`
+
+---
+
+## **5. Running the Model**
+Once a scenario is loaded:
+
+1. Press **ENTER**  
+2. QuantXT computes:
+   - normalized inputs  
+   - factor modules (M1–M13)  
+   - system stress score  
+3. The dashboard updates instantly
+
+This uses:
+
+- `run_engine_`
+- `compute_system_out_`
+- `SYSTEM_engine_`
+
+---
+
+## **6. Understanding the Dashboard**
+The dashboard displays:
+
+- **System Stress Score** (0–1)
+- **Regime Classification**
+- **Key Factor Outputs**
+- **Scenario Metadata**
+
+Color coding indicates:
+
+- Calm  
+- Elevated  
+- Stressed  
+- Crisis  
+
+This gives a quick read on macro‑financial conditions.
+
+---
+
+## **7. Viewing Graphs (QXGraph)**
+To visualize results:
+
+1. Press **G**  
+2. QuantXT launches **QXGraph.EXE**  
+3. Graphs render in **CGA Mode 6 (640×200 mono)**
+
+You can view:
+
+- time‑series of stress score  
+- factor overlays  
+- scenario comparisons  
+
+QXGraph is a separate executable for performance and authenticity.
+
+---
+
+## **8. Calibration Mode**
+Press **C** to enter calibration.
+
+QuantXT will:
+
+- load calibration scenarios  
+- run the model across all of them  
+- compute:
+  - total error  
+  - mean error  
+  - scenario‑level deviations  
+
+This uses:
+
+- `qxcalib_run_`
+
+Calibration helps tune weights and transforms.
+
+---
+
+## **9. Keyboard Shortcuts**
+
+| Action | Key |
+|-------|-----|
+| Load Scenarios | **F1** |
+| Browse Files | **F2** |
+| Run Engine | **ENTER** |
+| Graph View | **G** |
+| Calibration | **C** |
+| Quit | **ESC** |
+
+---
+
+## **10. Scenario File Requirements**
+Scenario files must be:
+
+- plain text  
+- numeric fields only  
+- one scenario per block  
+- space‑separated (no tabs)  
+- consistent field order  
+
+QuantXT is strict because it runs on DOS.
+
+---
+
+## **11. Troubleshooting**
+
+### **No scenarios load**
+- Check formatting  
+- Ensure no tabs  
+- Ensure numeric fields only  
+
+### **Dashboard shows zeros**
+- Scenario fields missing or misaligned  
+
+### **Graph won’t open**
+- Ensure `QXGRAPH.EXE` is in the same directory  
+
+### **Weird values**
+- Check for stray characters in scenario file  
+
+---
+
+## **12. System Requirements**
+- DOS 3.3+  
+- 256 KB RAM  
+- CGA or compatible  
+- 8087 recommended  
