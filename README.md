@@ -319,7 +319,7 @@ At mean error **0.0038** on a 0–1 scale, the model is hitting targets with sub
 
 Scenarios are in the following format. The goal will be to soon unify the Scenario and Calibration data formats. 
 
-# #name int_rev debt_gdp usd_reserve_share cbo_deficit xdate sahm tail_risk liq_gap ofr hy_spread dxy_mom oil_price ai_capex geopolitical_risk investor_sentiment
+#name int_rev debt_gdp usd_reserve_share cbo_deficit xdate sahm tail_risk liq_gap ofr hy_spread dxy_mom oil_price ai_capex geopolitical_risk investor_sentiment
 
 managed_norm_1 22 70 65 3 90 0.2 1.2 1.0 0.95 600 5 80 1.0 0.5 0.4
 
