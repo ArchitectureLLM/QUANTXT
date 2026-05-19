@@ -1,4 +1,4 @@
-# QUANTXT# QUANTXT
+# QUANTXT
 
 **Sovereign Risk Modeling Engine**  
 *C89 Standard· Watcom Open C V1.9 · Real-mode DOS · Intel 8087 FPU*
@@ -385,7 +385,7 @@ Making Sure Your op stack=16384 and -fp87 is enabled
 - 8087 recommended for full precision
 
 **System requirements:**
-- IBM PC/XT or compatible
+- IBM PC/XT or compatible (8087 for CoMath Processor acceleration)
 - 256 KB RAM minimum
 - CGA graphics
 - DOS 3.3+
