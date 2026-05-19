@@ -1,0 +1,180 @@
+/* dash.c -- QUANTXT fiscal dominance dashboard */
+
+#include <graph.h>
+#include <conio.h>
+#include <stdio.h>
+#include "state.h"
+#include "system.h"
+#include "colors.h"
+#include "dash.h"
+
+/* ---------------------------------------------------------
+ * Layout constants
+ * --------------------------------------------------------- */
+#define DASH_WIDTH   60
+#define DASH_OFFSET  ((80 - DASH_WIDTH) / 2)
+#define DASH_BAR_COL 22
+#define DASH_VAL_COL 34
+#define DASH_FOOTER  25
+
+/* ---------------------------------------------------------
+ * Internal helpers
+ * --------------------------------------------------------- */
+static void out_double(double v)
+{
+    char buf[16];
+    sprintf(buf, "%g", v);
+    _outtext(buf);
+}
+
+static void draw_divider(int row)
+{
+    _settextcolor(COL_FOOTER);
+    _settextposition(row, DASH_OFFSET);
+    _outtext("------------------------------------------------------------");
+    _settextcolor(COL_NORMAL);
+}
+
+static void draw_label(int row, const char *label)
+{
+    _settextposition(row, DASH_OFFSET + 2);
+    _outtext((char __far *)label);
+}
+
+/* ---------------------------------------------------------
+ * Risk bar renderer
+ * Bar always starts at DASH_BAR_COL
+ * Numeric value always at DASH_VAL_COL
+ * --------------------------------------------------------- */
+static void draw_risk_bar(double value, int row)
+{
+    int length;
+    int i;
+
+    length = (int)(value * 10.0);
+    if (length > 10) length = 10;
+    if (length < 0)  length = 0;
+
+    if (value < 0.5)
+        _settextcolor(COL_GOOD);
+    else if (value < 0.8)
+        _settextcolor(COL_WARNING);
+    else
+        _settextcolor(COL_CRITICAL);
+
+    _settextposition(row, DASH_OFFSET + DASH_BAR_COL);
+    for (i = 0; i < 10; i++) {
+        _outtext(i < length ? "#" : "-");
+    }
+
+    _settextcolor(COL_NORMAL);
+    _settextposition(row, DASH_OFFSET + DASH_VAL_COL);
+    _outtext("(");
+    out_double(value);
+    _outtext(")");
+}
+
+/* ---------------------------------------------------------
+ * draw_dashboard -- centered XT-style dashboard
+ * --------------------------------------------------------- */
+void draw_dashboard(const SystemOut *o, const State *s)
+{
+    _clearscreen(_GCLEARSCREEN);
+
+    /* ---- HEADER ---- */
+    _settextcolor(COL_HEADER);
+    _settextposition(1, DASH_OFFSET + 17);
+    _outtext("QUANTXT v1.1");
+    _settextposition(2, DASH_OFFSET + 12);
+    _outtext("FISCAL DOMINANCE DASHBOARD");
+    _settextcolor(COL_NORMAL);
+
+    draw_divider(3);
+
+    /* ---- INPUTS ---- */
+    _settextcolor(COL_HEADER);
+    _settextposition(4, DASH_OFFSET);
+    _outtext("INPUTS");
+    _settextcolor(COL_NORMAL);
+
+    draw_label(5,  "Debt/GDP          : "); out_double(s->debt_gdp);
+    draw_label(6,  "Interest/Revenue  : "); out_double(s->int_rev);
+    draw_label(7,  "USD Reserve Share : "); out_double(s->usd_reserve_share);
+    draw_label(8,  "CBO Deficit       : "); out_double(s->cbo_deficit);
+    draw_label(9,  "X-Date (days)     : "); out_double(s->xdate);
+    draw_label(10, "Sahm Rule         : "); out_double(s->sahm);
+
+    draw_divider(11);
+
+    /* ---- RISK VIEWS ---- */
+    _settextcolor(COL_HEADER);
+    _settextposition(12, DASH_OFFSET);
+    _outtext("RISK VIEWS");
+    _settextcolor(COL_NORMAL);
+
+    draw_label(13, "Tail Risk        "); draw_risk_bar(s->tail_risk,          13);
+    draw_label(14, "Liquidity Gap    "); draw_risk_bar(s->liq_gap,            14);
+    draw_label(15, "Debt Pressure    "); draw_risk_bar(o->debt_pressure,      15);
+    draw_label(16, "OFR Index        "); draw_risk_bar(s->ofr,                16);
+    draw_label(17, "HY Spread        "); draw_risk_bar(s->hy_spread,          17);
+    draw_label(18, "DXY Momentum     "); draw_risk_bar(s->dxy_mom,            18);
+    draw_label(19, "Oil Price        "); draw_risk_bar(s->oil_price,          19);
+    draw_label(20, "AI Capex         "); draw_risk_bar(s->ai_capex,           20);
+    draw_label(21, "Geo Risk         "); draw_risk_bar(s->geopolitical_risk,  21);
+    draw_label(22, "Sentiment        "); draw_risk_bar(s->investor_sentiment, 22);
+
+    draw_divider(23);
+
+    /* ---- SYSTEM OUTPUT ---- */
+    _settextcolor(COL_HEADER);
+    _settextposition(24, DASH_OFFSET);
+    _outtext("SYSTEM OUTPUT");
+    _settextcolor(COL_NORMAL);
+
+    /* System output scrolls to a second page on keypress */
+    _settextposition(DASH_FOOTER, DASH_OFFSET);
+    _settextcolor(COL_FOOTER);
+    _outtext("SPACE for output  ESC to return");
+    _settextcolor(COL_NORMAL);
+
+    for (;;) {
+        int ch = getch();
+
+        if (ch == 27)
+            return;
+
+        if (ch == 32) {
+            /* ---- OUTPUT PAGE ---- */
+            _clearscreen(_GCLEARSCREEN);
+
+            _settextcolor(COL_HEADER);
+            _settextposition(1, DASH_OFFSET + 12);
+            _outtext("SYSTEM OUTPUT");
+            _settextcolor(COL_NORMAL);
+
+            draw_divider(2);
+
+            draw_label(4,  "Raw Stress        : "); out_double(o->raw_stress);
+            draw_label(5,  "AI Damping        : "); out_double(o->ai_damping);
+            draw_label(6,  "Composite Stress  : "); out_double(o->M8);
+            draw_label(8,  "Regime            : ");
+            _outtext((char __far *)o->regime);
+            draw_label(10, "PONR Probability  : "); out_double(o->ponr_probability);
+
+            draw_divider(12);
+
+            _settextposition(DASH_FOOTER, DASH_OFFSET);
+            _settextcolor(COL_FOOTER);
+            _outtext("ESC to return to dashboard");
+            _settextcolor(COL_NORMAL);
+
+            while (getch() != 27) {
+                /* wait for ESC */
+            }
+
+            /* redraw main dash page */
+            draw_dashboard(o, s);
+            return;
+        }
+    }
+}
