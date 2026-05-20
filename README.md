@@ -523,10 +523,10 @@ QUANTXT.EXE
 - Watcom C/C++ (`wcc` / `wlink`)
 - Real-mode DOS (or DOSBox for modern systems)
 - Memory model: large (`-ml`)
-- 8087 recommended for full precision
 
 **System requirements:**
 - IBM PC/XT or compatible (8087 for Math CoProcessor acceleration)
+- 8087 recommended for full precision
 - 256 KB RAM minimum
 - CGA graphics
 - DOS 3.3+
