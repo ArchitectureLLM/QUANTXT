@@ -25,7 +25,7 @@ It loads economic scenarios, runs a deterministic **13‑factor stress model**, 
 
 - **Two‑pass stress engine** [Explain QUANTXT stress modules](https://github.com/ArchitectureLLM/QUANTXT/blob/main/README.md#modulesc--modulesh) with damping, smoothing, and regime classification  
 - **Deterministic outputs** — no randomness, no external dependencies  
-- **Runs on DOS, DOSBox, and retro toolchains** ([build instructions](https://github.com/ArchitectureLLM/QUANTXT/edit/main/README.md#build))  
+- **Runs on DOS, DOSBox, and retro toolchains** ([build instructions](https://github.com/ArchitectureLLM/QUANTXT#manual-build))  
 - **BIOS‑text dashboard** with centered layout and color‑coded risk bars  
 - **Lightweight, modular architecture** ([state.h](ca://s?q=Explain_QUANTXT_state_h)) as the shared root, no cycles  
 - **Educational reference implementation** showing how modern risk concepts fit into 1980s constraints
