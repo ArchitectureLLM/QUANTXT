@@ -39,7 +39,7 @@ QUANTXT is designed to be **transparent, inspectable, and easy to reason about**
 
 QUANTXT is a deterministic, nonlinear, multi-factor macro-financial simulation engine implemented in C89 and executed on IBM XT-class hardware. It computes a sovereign risk index by aggregating 13 economic, political, and market-based factor modules through a weighted nonlinear pipeline with reflexive feedback.
 
-It is currently an alpha demo. It is not a tutorial project. The goal is to build a calibrated analytical instrument — built to model US sovereign risk dynamics using real FRED macroeconomic data and market inputs, cross-referenced against contemporary macro frameworks including Paul Tudor Jones's bond market stress thesis and Garrett Jones's structural fiscal narrative.
+It is currently an alpha demo. It is not a tutorial project. The goal is to build a deterministic analytical instrument — built to model US sovereign risk dynamics using real FRED macroeconomic data and market inputs, cross-referenced against contemporary macro frameworks including Paul Tudor Jones's bond market stress thesis and Garrett Jones's structural fiscal narrative. It is an attempt to build deterministic tooling for evaluating macroeconomic narratives under constrained and reproducible execution.
 
 The engine began as a YAML schema, was validated in Python, and was hardened into C89/8087 production code — with calibration tightening at each step, not loosening. The most constrained environment produced the most accurate results.
 
