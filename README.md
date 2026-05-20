@@ -547,4 +547,5 @@ Bars now align visually with the dashboard header and numeric columns.
 Produces a more balanced and readable XT‑style UI.
 
 *QUANTXT v1.11 — May 19 2026*
+
 QUANTXT is licensed under the Apache-2.0 License. See LICENSE for details.
