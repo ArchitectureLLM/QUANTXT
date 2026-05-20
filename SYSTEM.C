@@ -1,10 +1,11 @@
 #include <string.h>
+
 #include "state.h"
 #include "system.h"
 #include "modules.h"
 #include "util.h"
-#include "history.h"
 #include "engine.h"
+
 
 
 /* ---------------------------------------------------------
@@ -26,8 +27,6 @@ void init_default_params(Params *p)
 
     p->hysteresis          = 0.82;
     p->terminal_persistence = 0.7;
-    p->base_rate           = 1.0;
-    p->base_growth         = 1.0;
     p->raw_c               = 1.0;
 }
 

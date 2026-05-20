@@ -1,66 +1,32 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include "state.h"
+#include "state.h"   /* Provides Params, SystemOut, State */
 
 /* ---------------------------------------------------------
- * Params — model configuration
- * --------------------------------------------------------- */
-typedef struct {
-    double ai_coef;
-
-    double m1_w;
-    double m2_w;
-    double m3_w;
-    double m4_w;
-    double m5_w;
-    double m6_w;
-    double m7_w;
-    double m10_w;
-    double m13_w;
-
-    double hysteresis;
-    double terminal_persistence;
-    double base_rate;
-    double base_growth;
-    double raw_c;
-} Params;
-
-/* ---------------------------------------------------------
- * SystemOut — output vector of SYSTEM_engine()
- * --------------------------------------------------------- */
-typedef struct {
-    /* Module scores */
-    double M1;
-    double M2;
-    double M3;
-    double M4;
-    double M5;
-    double M6;
-    double M7;
-    double M8;
-    double M9;
-    double M10;
-    double M13;
-
-    /* Composite metrics */
-    double raw_stress;
-    double ai_damping;
-
-    /* Regime classification */
-    char   regime[32];
-
-    /* Derived metrics */
-    double ponr_probability;
-    double stress_dispersion;
-    double debt_pressure;
-} SystemOut;
-
-/* ---------------------------------------------------------
- * Function prototypes
+ * Initialize default model parameters
  * --------------------------------------------------------- */
 void init_default_params(Params *p);
-
+/* ---------------------------------------------------------
+ * SYSTEM_engine — main nonlinear macro‑financial engine
+ *
+ * Arguments:
+ *   s              — input State vector
+ *   params         — model configuration
+ *   prev_M8        — previous composite stress score
+ *   has_prev       — whether prev_M8 is valid
+ *   reflexive_mode — reserved for future reflexive logic
+ *   periods_above  — consecutive periods above hysteresis
+ *   out            — output vector (SystemOut)
+ *
+ * Computes:
+ *   - M1–M13 module scores
+ *   - raw_stress
+ *   - ai_damping
+ *   - M8 composite stress
+ *   - regime classification
+ *   - derived metrics (PONR, dispersion, debt pressure)
+ * --------------------------------------------------------- */
 void SYSTEM_engine(
     const State *s,
     const Params *params,
@@ -71,4 +37,7 @@ void SYSTEM_engine(
     SystemOut *out
 );
 
-#endif
+void compute_system_out(const State *s, SystemOut *o);
+
+
+#endif /* SYSTEM_H */

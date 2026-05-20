@@ -151,7 +151,7 @@ static void draw_text(void)
 {
     _settextcolor(1);
 
-    center_text(21, "QUANTXT v1.1 Macro-Risk Modeling Engine");
+    center_text(21, "QUANTXT v1.11 Macro-Risk Modeling Engine");
     center_text(22, "IBM PC/XT Compatible CGA Mode 6");
     center_text(23, "(C) 2026 QUANTXT Research Labs");
 }

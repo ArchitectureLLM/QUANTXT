@@ -3,19 +3,23 @@
 #include <graph.h>
 #include <conio.h>
 #include <stdio.h>
+#include <dos.h>   /* for MK_FP() */
+
 #include "state.h"
-#include "system.h"
 #include "colors.h"
 #include "dash.h"
 
 /* ---------------------------------------------------------
  * Layout constants
  * --------------------------------------------------------- */
-#define DASH_WIDTH   60
-#define DASH_OFFSET  ((80 - DASH_WIDTH) / 2)
-#define DASH_BAR_COL 22
-#define DASH_VAL_COL 34
-#define DASH_FOOTER  25
+#define DASH_WIDTH     60
+#define DASH_OFFSET    ((80 - DASH_WIDTH) / 2)
+
+#define LABEL_COL      (DASH_OFFSET + 2)
+#define BAR_COL        (DASH_OFFSET + 26)   /* corrected alignment */
+#define VALUE_COL      (BAR_COL + 22)       /* after [####################] */
+
+#define DASH_FOOTER    25
 
 /* ---------------------------------------------------------
  * Internal helpers
@@ -37,41 +41,52 @@ static void draw_divider(int row)
 
 static void draw_label(int row, const char *label)
 {
-    _settextposition(row, DASH_OFFSET + 2);
+    _settextposition(row, LABEL_COL);
     _outtext((char __far *)label);
 }
 
 /* ---------------------------------------------------------
  * Risk bar renderer
- * Bar always starts at DASH_BAR_COL
- * Numeric value always at DASH_VAL_COL
+ * --------------------------------------------------------- */
+
+/* ---------------------------------------------------------
+ * Centered risk bar renderer
  * --------------------------------------------------------- */
 static void draw_risk_bar(double value, int row)
 {
-    int length;
+    int filled = (int)(value * 20.0);
     int i;
 
-    length = (int)(value * 10.0);
-    if (length > 10) length = 10;
-    if (length < 0)  length = 0;
+    /* Bar geometry: 24 characters wide, centered in 80 columns */
+    #define DASH_BAR_WIDTH  24
+    #define DASH_BAR_OFFSET ((80 - DASH_BAR_WIDTH) / 2)
 
-    if (value < 0.5)
-        _settextcolor(COL_GOOD);
-    else if (value < 0.8)
-        _settextcolor(COL_WARNING);
-    else
-        _settextcolor(COL_CRITICAL);
+    if (filled < 0)  filled = 0;
+    if (filled > 20) filled = 20;
 
-    _settextposition(row, DASH_OFFSET + DASH_BAR_COL);
-    for (i = 0; i < 10; i++) {
-        _outtext(i < length ? "#" : "-");
-    }
-
+    /* Draw opening bracket */
+    _settextposition(row, DASH_BAR_OFFSET);
     _settextcolor(COL_NORMAL);
-    _settextposition(row, DASH_OFFSET + DASH_VAL_COL);
-    _outtext("(");
+    _outtext("[");
+
+    /* Draw filled portion */
+    _settextcolor(value > 0.7 ? COL_HIGH :
+                 (value > 0.4 ? COL_MED : COL_LOW));
+
+    for (i = 0; i < filled; ++i)
+        _outtext("#");
+
+    /* Draw empty portion */
+    _settextcolor(COL_NORMAL);
+    for (i = filled; i < 20; ++i)
+        _outtext(" ");
+
+    /* Draw closing bracket */
+    _outtext("]");
+
+    /* Print numeric value aligned to the right of the bar */
+    _settextposition(row, DASH_BAR_OFFSET + DASH_BAR_WIDTH + 2);
     out_double(value);
-    _outtext(")");
 }
 
 /* ---------------------------------------------------------
@@ -131,7 +146,6 @@ void draw_dashboard(const SystemOut *o, const State *s)
     _outtext("SYSTEM OUTPUT");
     _settextcolor(COL_NORMAL);
 
-    /* System output scrolls to a second page on keypress */
     _settextposition(DASH_FOOTER, DASH_OFFSET);
     _settextcolor(COL_FOOTER);
     _outtext("SPACE for output  ESC to return");
@@ -172,7 +186,6 @@ void draw_dashboard(const SystemOut *o, const State *s)
                 /* wait for ESC */
             }
 
-            /* redraw main dash page */
             draw_dashboard(o, s);
             return;
         }

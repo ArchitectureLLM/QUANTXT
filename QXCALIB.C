@@ -1,10 +1,12 @@
 /* qxcalib.c – QuantXT calibration module */
 
 #include "qxcalib.h"
+#include "state.h"
+#include "engine.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "engine.h"
 
 /* ------------------------------------------------------------------
    INTEGRATION POINTS – REAL QUANTXT ENGINE HOOKS

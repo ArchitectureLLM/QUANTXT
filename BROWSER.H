@@ -1,6 +1,8 @@
 #ifndef BROWSER_H
 #define BROWSER_H
 
+#include "state.h"
+
 /*
  * browser.h — Scenario browser + file loader UI for IBM PC XT text mode
  *

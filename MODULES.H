@@ -2,7 +2,6 @@
 #define MODULES_H
 
 #include "state.h"
-#include "system.h"   /* ← REQUIRED so SystemOut is known */
 
 /*
  * modules.h — Normalized macro‑risk module interface (M1–M13)
@@ -43,7 +42,5 @@ double M10(double geopolitical_risk);
 
 /* Behavioral sentiment inversion */
 double M13(double investor_sentiment);
-
-void compute_system_out(const State *s, SystemOut *o);
 
 #endif

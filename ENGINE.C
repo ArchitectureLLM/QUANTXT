@@ -26,7 +26,12 @@
  * To recalibrate: update CALIB.TXT and re-run OLS solver.
  */
 
-#include "engine.h"
+#include <math.h>
+#include <stdio.h>
+
+#include "state.h"     /* Provides State, Params */
+#include "engine.h"    /* Provides run_engine() prototype */
+
 
 float run_engine(const State *st)
 {

@@ -13,17 +13,13 @@
  *   - scenario_count: number of active scenarios
  *   - fill_state_from_scenario(): hydrates a State from a Scenario
  *   - manual_input(): interactive XT‑style manual entry
- *   - load_scenario_file_multi(): loads multiple [scenario] blocks
- *                                 from a .TXT file into scenarios[]
+ *   - load_scenario_file_multi(): loads multiple scenarios from .TXT
  *
  * The loader appends new scenarios to the global registry and
  * increments scenario_count. It does NOT clear existing scenarios.
  *
  * This header intentionally avoids UI dependencies.
  */
-
-/* Forward declaration (Scenario is defined in state.h) */
-typedef struct Scenario Scenario;
 
 /* Global scenario registry */
 extern Scenario scenarios[MAX_SCENARIOS];

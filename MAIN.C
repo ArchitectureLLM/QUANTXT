@@ -2,16 +2,17 @@
 #include <conio.h>
 #include <stdio.h>
 
+#include "colors.h"
 #include "state.h"
 #include "system.h"
-#include "scenario.h"
 #include "modules.h"
-#include "dash.h"
+#include "scenario.h"
 #include "browser.h"
-#include "colors.h"
+#include "filebro.h"
+#include "dash.h"
 #include "qxcalib.h"
 #include "intro.h"
-#include "filebro.h"
+
 
 #define LOGO_LEFT      35
 #define LOGO_COL       (LOGO_LEFT / 8)   /* 8px BIOS font width */
@@ -43,7 +44,7 @@ int main(void)
 
         /* Title */
         _settextposition(MENU_TOP, MENU_COL);
-        _outtext("QUANTXT v1.1  (IBM PC XT Edition)");
+        _outtext("QUANTXT v1.11 (IBM PC XT Edition)");
 
         /* Menu items */
         _settextposition(MENU_TOP + 2, MENU_COL);

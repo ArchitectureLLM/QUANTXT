@@ -3,7 +3,7 @@
 #ifndef QXCALIB_H
 #define QXCALIB_H
 
-#include <stdio.h>
+#include "state.h"
 
 /* Forward‑declare your existing model state type.  
    Change this include/name to match QuantXT. */

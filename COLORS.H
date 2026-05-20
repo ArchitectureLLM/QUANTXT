@@ -36,6 +36,9 @@
  * --------------------------------------------------------- */
 #define COL_GOOD         COL_GREEN       /* low risk */
 #define COL_CRITICAL     COL_LIGHTRED    /* high risk */
+#define COL_HIGH   COL_LIGHTRED   /* high stress */
+#define COL_MED    COL_YELLOW     /* medium stress */
+#define COL_LOW    COL_GREEN      /* low stress */
 
 /* ---------------------------------------------------------
  * Additional semantic colors used in browser & preview
@@ -45,3 +48,5 @@
 #define COL_LABEL        COL_CYAN
 
 #endif
+
+

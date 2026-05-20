@@ -4,9 +4,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "state.h"
 #include "scenario.h"
 #include "colors.h"
-#include "state.h"
+
+
 
 /* ---------------------------------------------------------
  * Built‑in scenarios

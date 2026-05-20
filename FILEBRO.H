@@ -1,6 +1,8 @@
 #ifndef FILEBRO_H
 #define FILEBRO_H
 
+#include "state.h"   /* Only needed if you reference Scenario names */
+
 /*
  * filebro.h — DOS 8.3 TXT file browser for QUANTXT
  *
