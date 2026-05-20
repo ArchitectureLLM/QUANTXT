@@ -1,6 +1,7 @@
 # QUANTXT
 <img width="701" height="502" alt="Screenshot" src="DOCS/Screenshot.png" />
 
+>Screenshot: QUANTXT intro screen running on an IBM 5160 (8087 FPU), displayed on an IBM 5153 Color Display.
 
 **Sovereign Risk Modeling Engine**  
 *C89 Standard· Watcom Open C V1.9 · Real-mode DOS · Intel 8087 FPU*
