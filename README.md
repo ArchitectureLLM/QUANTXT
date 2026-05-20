@@ -6,6 +6,11 @@
 *C89 Standard· Watcom Open C V1.9 · Real-mode DOS · Intel 8087 FPU*
 
 ---
+## **Releases**
+
+[Latest Full Release can be found here](https://github.com/ArchitectureLLM/QUANTXT/releases)
+
+---
 
 > Built to answer a real question: given current US sovereign conditions, what does the data say the stress probability is?  
 > The answer runs on a 1981 coprocessor with a mean calibration error of **0.0038**.
