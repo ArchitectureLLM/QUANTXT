@@ -226,24 +226,24 @@ startup
 
 ---
 
-## File Index
+## **File Index (v1.11)**
 
-| File | Role | Deps (user headers) |
-|---|---|---|
-| `STATE.H` | Types only | — |
-| `COLORS.H` | Constants only | — |
-| `UTIL.H/C` | Math helpers | — |
-| `HISTORY.H/C` | Ring buffer | — |
-| `ENGINE.H/C` | OLS scorer | `state.h` |
-| `INTRO.H/C` | Splash screen | — |
-| `FILEBRO.H/C` | File picker | `colors.h` |
-| `SCENARIO.H/C` | Scenario registry | `state.h`, `colors.h` |
-| `MODULES.H/C` | M1–M13 + aggregator | `state.h`, `system.h` ⚠ |
-| `SYSTEM.H/C` | Full risk engine | `state.h`, `modules.h` ⚠, `util.h`, `history.h`, `engine.h` |
-| `DASH.H/C` | Dashboard UI | `state.h`, `system.h`, `colors.h` |
-| `BROWSER.H/C` | Scenario browser UI | `state.h`, `system.h`, `scenario.h`, `colors.h` |
-| `QXCALIB.H/C` | Calibration runner | `state.h`, `engine.h` |
-| `MAIN.C` | Entry point | all of the above |
+| File            | Role                               | Deps (user headers) |
+|-----------------|-------------------------------------|----------------------|
+| `state.h`       | Core types (`State`, `Scenario`, `Params`, `SystemOut`) | — |
+| `colors.h`      | Color constants                     | — |
+| `util.h/c`      | Math helpers (clip01, LOGF, SMOOTH_STEP, PWL, SPL) | — |
+| `history.h/c`   | Run‑history ring buffer             | — |
+| `engine.h/c`    | OLS scoring engine (`run_engine`)   | `state.h` |
+| `intro.h/c`     | Splash screen                       | — |
+| `filebro.h/c`   | File picker UI                      | `colors.h` |
+| `scenario.h/c`  | Scenario registry, loader, manual input | `state.h`, `colors.h` |
+| `modules.h/c`   | M1–M13 stress modules + aggregator  | `state.h` |
+| `system.h/c`    | Full macro‑risk engine              | `state.h`, `modules.h`, `util.h`, `history.h`, `engine.h` |
+| `dash.h/c`      | XT‑style dashboard UI               | `state.h`, `system.h`, `colors.h` |
+| `browser.h/c`   | Scenario browser UI                 | `state.h`, `scenario.h`, `colors.h` |
+| `qxcalib.h/c`   | Calibration runner                  | `state.h`, `engine.h` |
+| `main.c`        | Entry point                         | all of the above |
 
 ---
 
