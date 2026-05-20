@@ -399,7 +399,7 @@ Making Sure Your op stack=16384 and -fp87 is enabled
 - 8087 recommended for full precision
 
 **System requirements:**
-- IBM PC/XT or compatible (8087 for CoMath Processor acceleration)
+- IBM PC/XT or compatible (8087 for Math CoProcessor acceleration)
 - 256 KB RAM minimum
 - CGA graphics
 - DOS 3.3+
