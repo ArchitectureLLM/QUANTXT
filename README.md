@@ -1,5 +1,5 @@
 # QUANTXT
-<img width="701" height="502" alt="Screenshot" src="https://github.com/user-attachments/assets/6860052d-75b7-4dee-8112-8c7e5b889415" />
+<img width="701" height="502" alt="Screenshot" src="DOCS/Screenshot.png" />
 
 
 **Sovereign Risk Modeling Engine**  
