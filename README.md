@@ -19,7 +19,7 @@ It loads economic scenarios, runs a deterministic **13‑factor stress model**, 
 
 - **Two‑pass stress engine** [Explain QUANTXT stress modules](https://github.com/ArchitectureLLM/QUANTXT/blob/main/README.md#modulesc--modulesh) with damping, smoothing, and regime classification  
 - **Deterministic outputs** — no randomness, no external dependencies  
-- **Runs on DOS, DOSBox, and retro toolchains** ([build instructions](ca://s?q=Show_QUANTXT_build_instructions))  
+- **Runs on DOS, DOSBox, and retro toolchains** ([build instructions](https://github.com/ArchitectureLLM/QUANTXT/edit/main/README.md#build))  
 - **BIOS‑text dashboard** with centered layout and color‑coded risk bars  
 - **Lightweight, modular architecture** ([state.h](ca://s?q=Explain_QUANTXT_state_h)) as the shared root, no cycles  
 - **Educational reference implementation** showing how modern risk concepts fit into 1980s constraints
@@ -28,7 +28,7 @@ QUANTXT is designed to be **transparent, inspectable, and easy to reason about**
 
 ---
 
-## What It Is (Long Version)
+## The Full Explanation. 
 
 QUANTXT is a deterministic, nonlinear, multi-factor macro-financial simulation engine implemented in C89 and executed on IBM XT-class hardware. It computes a sovereign risk index by aggregating 13 economic, political, and market-based factor modules through a weighted nonlinear pipeline with reflexive feedback.
 
@@ -37,12 +37,6 @@ It is current an alpha demo. It is not a tutorial project. The goal is to build 
 The engine began as a YAML schema, was validated in Python, and was hardened into C89/8087 production code — with calibration tightening at each step, not loosening. The most constrained environment produced the most accurate results.
 
 ---
-
-## Architecture
-
-```
-QUANTXT.EXE              — Main engine + DOS text-mode UI
-```
 
 # QUANTXT Code Map
 
@@ -411,8 +405,128 @@ Scenarios are separated by blank lines. Comments begin with `#` or `;`.
 ## Build
 
 ```bash
-In Open Watcom V1.9 Use the attached maker files rules
-Making Sure Your op stack=16384 and -fp87 is enabled
+# QUANTXT — Build Instructions
+
+## Requirements
+
+| Tool | Version | Notes |
+|------|---------|-------|
+| [Open Watcom C](https://github.com/open-watcom/open-watcom-v2/releases) | V1.9 | Primary toolchain |
+| DOS or DOSBox | Any | For running the compiled binary |
+
+> **DOSBox** is the recommended environment for modern systems (Windows, macOS, Linux).  
+> Download: https://www.dosbox.com/
+
+---
+
+## Quick Build (Makefile)
+
+If you have Open Watcom installed and the repo cloned, the simplest path is:
+
+```bat
+wmake -f QUANTXT.mk
+```
+
+This compiles all modules and links `QUANTXT.EXE` in one step.
+
+---
+
+## Manual Build
+
+### Step 1 — Compile each module
+
+Run `wcc` on each `.C` file. Replace `C:\WATCOM\h` with your Watcom include path if different.
+
+```bat
+wcc BROWSER.C  -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc DASH.C     -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc ENGINE.C   -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc FILEBRO.C  -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc HISTORY.C  -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc INTRO.C    -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc MAIN.C     -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc MODULES.C  -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc QXCALIB.C  -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc SCENARIO.C -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc SYSTEM.C   -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+wcc UTIL.C     -i="C:\WATCOM\h" -w4 -e25 -zq -od -d2 -fpi87 -bt=dos -fo=.obj -ml
+```
+
+### Step 2 — Link
+
+```bat
+wlink name QUANTXT sys dos op st=16384 op m op maxe=25 op q op symf FILE BROWSER.obj,DASH.obj,ENGINE.obj,FILEBRO.obj,HISTORY.obj,INTRO.obj,MAIN.obj,MODULES.obj,QXCALIB.obj,SCENARIO.obj,SYSTEM.obj,UTIL.obj
+```
+
+---
+
+## Compiler Flag Reference
+
+| Flag | Meaning |
+|------|---------|
+| `-ml` | Large memory model — **required** |
+| `-fpi87` | Inline 8087 FPU instructions — **required** |
+| `-bt=dos` | Target real-mode DOS |
+| `-w4` | Warning level 4 |
+| `-e25` | Stop after 25 errors |
+| `-zq` | Quiet mode |
+| `-od` | Disable optimization (debug-safe) |
+| `-d2` | Full debug info |
+
+## Linker Flag Reference
+
+| Flag | Meaning |
+|------|---------|
+| `sys dos` | Real-mode DOS executable |
+| `op st=16384` | Stack size 16 KB — **required** |
+| `op m` | Generate map file |
+| `op maxe=25` | Stop after 25 errors |
+| `op q` | Quiet mode |
+| `op symf` | Generate symbol file |
+
+---
+
+## Running on Modern Systems (DOSBox)
+
+1. Install [DOSBox](https://www.dosbox.com/)
+2. Launch DOSBox and mount your build directory:
+
+```
+mount c C:\path\to\QUANTXT
+c:
+QUANTXT.EXE
+```
+
+3. The splash screen will load, followed by the main menu.
+
+> On a real IBM PC/XT the calibration routine will pause briefly while loading 60 scenarios — this is expected.
+
+---
+
+## Tested Environment
+
+| Component | Spec |
+|-----------|------|
+| Compiler | Open Watcom C V1.9 |
+| Target OS | DOS 3.3+ |
+| Hardware | IBM PC/XT or compatible |
+| FPU | Intel 8087 (or DOSBox emulation) |
+| RAM | 256 KB minimum |
+| Display | CGA |
+
+
+---
+
+## Tested Environment
+
+| Component | Spec |
+|-----------|------|
+| Compiler | Open Watcom C V1.9 |
+| Target OS | DOS 3.3+ |
+| Hardware | IBM PC/XT or compatible |
+| FPU | Intel 8087 (or DOSBox emulation) |
+| RAM | 256 KB minimum |
+| Display | CGA |
 ```
 
 **Requirements:**
