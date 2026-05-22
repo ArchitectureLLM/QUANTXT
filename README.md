@@ -541,8 +541,8 @@ QUANTXT.EXE
 |-----|--------|
 | `1` | Browse scenario files |
 | `2` | Manual Entry of Data |
-| `3` | Load Scenario Data |
-| `4` | Run Calibration Routine (using CALIB.TXT)* | 
+| `3` | Load Scenario File |
+| `4` | Run Calibration File* | 
 | `ENTER` | Run engine |
 | `ESC` | Quit |
 
@@ -668,6 +668,42 @@ Bars now align visually with the dashboard header and numeric columns.
 
 Produces a more balanced and readable XT‑style UI.
 
-*QUANTXT v1.11 — May 19 2026*
+## QUANTXT v1.12 — Stability, Precision & Calibration Release
+
+Release Date: May 21, 2026
+
+Focus: Floating-point precision corrections, calibration engine upgrade,
+file browser improvements, and UI stability fixes.
+
+### Precision Fixes
+- Corrected float → double throughout ENGINE.C, ENGINE.H, and
+  QXCALIB.H for correct 8087 FPU precision. State fields were
+  already double; ENGINE was the remaining inconsistency.
+- Removed erroneous (float) casts in ENGINE.C weight accumulation.
+- QXCalibResult total_error and mean_error promoted to double.
+
+### Calibration Engine Upgrade
+- Calibration option now opens a file browser to select any .TXT
+  calibration dataset rather than being hardcoded to CALIB.TXT.
+- In-progress screen with blinking status message shown during run
+  so the engine does not appear frozen on real hardware.
+- Full Phase 1 diagnostic report now written to CALIB_RESULT.TXT:
+  aggregate metrics (SSE, MSE, RMSE), bias analysis, regime
+  breakdown across 5 stress bands, and per-scenario detail table
+  with flagged outliers.
+- Post-run results displayed on screen with spacebar paging.
+
+### Browser Fixes
+- BROWSER.C: fixed viewport scroll bug where scenarios beyond row
+  25 were not visible. Added top/sel coupled scrolling, PgUp/PgDn,
+  scroll indicators, and scenario counter.
+- FILEBRO.C: same viewport fix applied. Added scroll indicators,
+  PgUp/PgDn, file counter, and empty directory message.
+
+### General
+- Apache License 2.0 header added to source files.
+- Version references updated to v1.12 throughout.
+
+*QUANTXT v1.12 — May 21 2026*
 
 QUANTXT is licensed under the Apache-2.0 License. See LICENSE for details.
