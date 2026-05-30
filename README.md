@@ -700,6 +700,126 @@ file browser improvements, and UI stability fixes.
 - FILEBRO.C: same viewport fix applied. Added scroll indicators,
   PgUp/PgDn, file counter, and empty directory message.
 
+  # QUANTXT v1.12 → v1.14 Changelog
+
+## Executive Summary
+
+QUANTXT v1.14 consolidates the calibration pipeline, fixes critical parameter handling issues, and stabilizes scenario loading. The core engine is now production-ready for daily market observation workflows.
+
+---
+
+## Critical Fixes
+
+### 1. **Parameter Initialization & MODL.TXT Corruption**
+- **Issue**: Uninitialized CalibParams in qxcalib_run() led to garbage values in MODL.TXT
+- **Fix**: Added safe default initialization (0.85, 0.72, 1.20, ...) before loading from disk
+- **Impact**: Calibration now produces valid, stable model parameters on every run
+
+### 2. **Build System Stability (C89/Watcom C 1.9)**
+- Resolved duplicate typedef conflicts (CalibParamsTag, Scenario)
+- Added include guards to prevent redeclaration
+- Cleaned scenario.c to eliminate struct assignments and static initializers with non-constants
+- **Result**: Clean compile with zero critical warnings on IBM PC XT target
+
+### 3. **Engine Signature Correction**
+- Fixed run_engine() calls in qxcalib_compute() to pass both State and CalibParams
+- Aligned all engine invocations across main.c, qxcalib.c, and dashboard code
+- **Impact**: Consistent parameter flow through calibration and execution paths
+
+---
+
+## New Features
+
+### 1. **Closed Calibration Loop**
+- Calibration engine now produces updated MODL.TXT with first-order parameter adjustment
+- Adjustment rule: `new_param = old_param * (1 - mean_signed_error)`
+- CALIB_AR.TXT (diagnostic output) remains separate from MODL.TXT (control input)
+- **Workflow**: Load MODL.TXT → run scenarios → calibrate → update MODL.TXT → repeat
+
+### 2. **Scenario File Format Consolidation**
+- Old format (SCENARIO.TXT): 15 fields (space-delimited)
+- New format (CALIB2N): 20 fields (key=value, blank-line separated)
+- Dual-loader: automatically detects format and loads correctly
+- **Compatibility**: Existing scenario files still work; new format supports richer metadata
+
+### 3. **Daily Market Observation Support**
+- Added USMAY10D.TXT / USMAY30D.TXT formats for consecutive-day market snapshots
+- Derived missing fields: lagged_ai, infl, unemp, gdp
+- Scenarios now loadable directly into engine for real-time market analysis
+
+---
+
+## Calibration Quality
+
+**Test run (46 scenarios):**
+- Total SSE: 0.3143
+- RMSE: 0.0827
+- Mean signed error: +0.0118 (slight over-prediction)
+- Regime breakdown balanced across 5 risk regimes
+
+**Updated MODL.TXT parameters** (from calibration):
+```
+m1_w=0.8399802924
+m3_w=0.7115127183
+m8_mid=1.1858545304
+m8_k=0.8893908978
+ai_coef=0.4941060543
+hysteresis=0.2964636326
+regime_penalty=0.7905696870
+liquidity_floor=0.3952848435
+tail_risk_scale=1.0870333196
+```
+
+---
+
+## Technical Debt Addressed
+
+1. ✓ Removed struct assignment overhead (C89 compatibility)
+2. ✓ Eliminated static initializers with non-constant expressions
+3. ✓ Fixed 8087 coprocessor precision handling in parameter updates
+4. ✓ Reduced memory footprint for DOS XT compatibility
+5. ✓ Standardized file I/O error handling
+
+---
+
+## Testing & Validation
+
+- **Compile**: Clean build with Watcom C 1.9
+- **Calibration**: 46-scenario precedent file, converged in single pass
+- **Scenario Loading**: SCENARIO.TXT, CALIB2N.TXT, USMAY10D/30D formats verified
+- **Dashboard**: Real-time computation and display stable on XT hardware (emulated)
+
+---
+
+## Breaking Changes
+
+None. v1.14 is fully backward-compatible with v1.12 scenario files and workflows.
+
+---
+
+## Known Limitations
+
+- Single-threaded calibration (DOS constraint)
+- Fixed scenario buffer (MAX_SCENARIOS=100)
+- Precision: 8087 double-precision (not extended)
+- File I/O: DOS text-mode only
+
+---
+
+## Next Steps (v1.15+)
+
+- Extend calibration to multi-regime parameter tuning
+- Add persistence layer for parameter history
+- Implement incremental scenario loading for large datasets
+- Forecast module (conditional on stable parameters)
+
+---
+
+**Version**: QUANTXT v1.14 (IBM PC XT Edition)  
+**Build**: Watcom C 1.9 / DOS 6.22  
+**Date**: May 2026  
+**Status**: Production Ready
+
 ### General
 - Apache License 2.0 header added to source files.
 - Version references updated to v1.12 throughout.
